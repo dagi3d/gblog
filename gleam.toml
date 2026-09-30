@@ -1,0 +1,29 @@
+name = "gblog"
+version = "1.0.0"
+target = "javascript"
+
+# Fill out these fields if you intend to generate HTML documentation or publish
+# your project to the Hex package manager.
+#
+description = "Blog engine that uses Notion as backend"
+licences = ["MIT"]
+
+repository = { type = "github", user = "dagi3d", repo = "gblog" }
+# links = [{ title = "Website", href = "" }]
+#
+# For a full reference of all the available options, you can have a look at
+# https://gleam.run/writing-gleam/gleam-toml/.
+
+[dependencies]
+glen = ">= 2.2.3 and < 3.0.0"
+gleam_stdlib = ">= 1.0.0 and < 2.0.0"
+sqlight = ">= 1.2.0 and < 2.0.0"
+gtempo = ">= 7.4.0 and < 8.0.0"
+youid = ">= 1.6.0 and < 2.0.0"
+gleam_http = ">= 4.4.0 and < 5.0.0"
+gleam_json = ">= 3.1.0 and < 4.0.0"
+gleam_time = ">= 1.10.0 and < 2.0.0"
+gleam_javascript = ">= 1.0.1 and < 2.0.0"
+
+[dev_dependencies]
+gleeunit = ">= 1.0.0 and < 2.0.0"
