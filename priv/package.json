@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+		"build:css": "sass assets/css/application.scss public/assets/css/application.css --load-path=node_modules --quiet-deps --silence-deprecation=import",
+		"build:js": "esbuild assets/js/main.js --bundle --outdir=public/assets/js",
+		"watch:js": "pnpm run build:js --watch=forever",
+		"watch:css": "pnpm run build:css --watch",
+		"build:assets": "pnpm run build:css && pnpm run build:js",
+		"watch:assets": "pnpm run watch:css & pnpm run watch:js & wait"
   },
   "keywords": [],
   "author": "",
