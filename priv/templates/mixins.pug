@@ -1,0 +1,37 @@
+mixin link_to(path, title)
+  a(href=path)
+    if title
+      = title
+    else
+      block
+
+
+mixin post_tags(post, extra_class = "")
+  ul.c-tags(class=`${extra_class}`)
+    each tag in post.tags
+      li.c-tags__tag(class=`c-tags__tag--${tag}`)
+        +link_to(tag_path(tag), tag)
+  
+
+-
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  function post_date_abbrv(post) {
+    const date = new Date(Date.parse(post.published_at));
+    return `${months[date.getMonth()]} ${date.getDate()}`;
+  }
+
+  function post_date(post) {
+    const date = new Date(Date.parse(post.published_at));
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+  }
+
+- function post_path(post) { return `/blog${post.path}`; }
+
+- function blog_path() { return "/blog"; }
+
+- function root_path() { return "/"; }
+
+- function about_path() { return "/about"; }
+
+- function tag_path(tag) { return `/blog/tag/${tag}`}

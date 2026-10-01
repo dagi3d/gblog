@@ -33,7 +33,7 @@ type RenderError {
 pub fn default_routes(
   req: glen.Request,
   ctx: context.Ctx,
-  next: fn(context.Ctx) -> Promise(glen.Response),
+  // next: fn(context.Ctx) -> Promise(glen.Response),
 ) -> Promise(glen.Response) {
   use <- glen.static(req, "static", "./public/static")
 
@@ -43,7 +43,27 @@ pub fn default_routes(
 
   use <- handle_websocket(req)
   use <- handle_blog(req, ctx)
-  next(ctx)
+
+  not_found()
+  // next(ctx)
+}
+
+pub fn handle(
+  req: glen.Request,
+  ctx: context.Ctx,
+  segments: List(String),
+  template: String,
+  next: fn(context.Ctx) -> Promise(glen.Response),
+) -> Promise(glen.Response) {
+  case glen.path_segments(req) == segments {
+    True -> render_page(template, ctx)
+    _ -> next(ctx)
+  }
+}
+
+pub fn not_found() {
+  glen.text("Not found", 404)
+  |> promise.resolve
 }
 
 fn handle_websocket(
@@ -69,70 +89,15 @@ fn handle_blog(
   next: fn() -> Promise(glen.Response),
 ) -> Promise(glen.Response) {
   case glen.path_segments(req) {
-    [] -> render_page("index", ctx)
+    [] -> render_page("index.html", ctx)
     ["blog"] -> render_blog(ctx)
     ["blog", _, _, _, _] -> render_post(req.path, ctx)
     ["blog", "tag", tag] -> render_tag(tag, ctx)
-    ["about"] -> render_page("about", ctx)
+    ["about"] -> render_page("about.html", ctx)
     ["rss.xml"] -> render_feed()
     _ -> next()
   }
 }
-
-// TODO: redirect to root if no tags are found
-// pub fn handle_request(req: glen.Request) -> Promise(glen.Response) {
-//   let ctx = build_ctx(req)
-//
-//   use <- glen.static(req, "img", "./public/img")
-//   use <- glen.static(req, "fonts", "./public/fonts")
-//   use <- glen.static(req, "assets", "./public/assets")
-//   use <- glen.static(req, "favicon.png", "./public/favicon.png")
-//
-//   case glen.path_segments(req), is_prod() {
-//     // websocket the browser holds open during development; when the server
-//     // process restarts, the connection drops and the client reloads the page
-//     ["__livereload"], False ->
-//       glen.websocket(
-//         req,
-//         on_open: fn(_conn) { Nil },
-//         on_close: fn(_state) { Nil },
-//         on_event: fn(_conn, state, _msg) { state },
-//         with_conn: fn(_conn) { Nil },
-//       )
-//
-//     path_segments, _ -> {
-//       let response = case path_segments {
-//         [] -> render_page("index", ctx)
-//         // blog
-//         ["blog"] -> render_blog(ctx)
-//         ["blog", "tag", tag] -> render_tag(tag, ctx)
-//         ["blog", _, _, _, _] -> render_post(req.path, ctx)
-//         // single pages
-//         ["about"] -> render_page("about", ctx)
-//         // feed
-//         ["rss.xml"] -> render_feed()
-//         // untrack
-//         ["untrack"] -> {
-//           render_untrack()
-//         }
-//         _ -> render_response(Response(Error(NotFound), HTML))
-//       }
-//
-//       let response =
-//         response
-//         |> verify_untrack_cookie(req)
-//
-//       promise.resolve(response)
-//     }
-//   }
-// }
-// fn build_ctx(req: glen.Request) -> Ctx {
-//   Ctx
-// }
-
-// fn build_ctx(req: glen.Request) -> Ctx {
-//   Ctx(untrack: get_untrack_cookie(req))
-// }
 
 fn render_blog(ctx: context.Ctx) {
   render_posts(None, "posts.html.pug", ctx, HTML)
@@ -218,7 +183,7 @@ fn render_post(path: String, ctx) {
 
   let vars = [#("post", post.to_json(post))]
 
-  let out = render("post.pug", ctx, vars)
+  let out = render("post.html.pug", ctx, vars)
   render_response(Response(Ok(out), HTML))
 }
 
