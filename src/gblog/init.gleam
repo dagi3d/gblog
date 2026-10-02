@@ -1,9 +1,10 @@
 import gleam/result
 import simplifile
 
-const source = "priv/templates"
-
 const destination = "templates"
+
+@external(javascript, "./ffi/paths.mjs", "templates_source_directory")
+fn templates_source_directory() -> String
 
 /// Copies the default templates into the consuming project, so they can be
 /// customized. Does nothing if a non-empty `templates` directory already
@@ -12,7 +13,11 @@ pub fn main() -> Result(Nil, simplifile.FileError) {
   use should_copy <- result.try(is_missing_or_empty(destination))
 
   case should_copy {
-    True -> simplifile.copy_directory(at: source, to: destination)
+    True ->
+      simplifile.copy_directory(
+        at: templates_source_directory(),
+        to: destination,
+      )
     False -> Ok(Nil)
   }
 }
