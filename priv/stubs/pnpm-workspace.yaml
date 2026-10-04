@@ -1,0 +1,6 @@
+nodeLinker: hoisted
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+packages:
+  - ./build/packages/gblog/priv/

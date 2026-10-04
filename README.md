@@ -12,6 +12,7 @@ gleam add glen             # to avoid gleam compiler warning
 ```
 
 ```
+# 
 nodeLinker: hoisted
 allowBuilds:
   '@parcel/watcher': true
@@ -21,7 +22,7 @@ packages:
 ```
 
 ```sh
-    pnpm install
+pnpm install
 ```
 
 
