@@ -2,14 +2,19 @@ import gleam/io
 import gleam/result
 import simplifile
 
-/// Copies the default templates into the consuming project, so they can be
-/// customized. Does nothing if a non-empty `templates` directory already
-/// exists.
 pub fn main() -> Result(Nil, simplifile.FileError) {
   use cwd <- result.try(simplifile.current_directory())
   let src_dir = cwd <> "/build/packages/gblog/priv/stubs"
 
+  // workaround for demo
+  let src_dir = case simplifile.exists(src_dir, True) {
+    Ok(True) -> src_dir
+    Ok(False) -> cwd <> "/../priv/stubs"
+    Error(_) -> src_dir
+  }
+
   let _ = copy(src_dir, "/templates", cwd)
+  let _ = copy(src_dir, "/package.json", cwd)
   let _ = copy(src_dir, "/pnpm-workspace.yaml", cwd)
   let _ = copy(src_dir, "/blog.db", cwd)
 }
@@ -20,11 +25,13 @@ fn copy(src_dir, stub, dst_dir) {
   use should_copy <- result.try(is_missing_or_empty(dst))
   use is_directory <- result.try(simplifile.is_directory(src))
 
-  echo #(src, dst, should_copy)
   let _ = case should_copy, is_directory {
     True, True -> simplifile.copy_directory(at: src, to: dst)
     True, False -> simplifile.copy_file(at: src, to: dst)
-    False, _ -> Ok(Nil)
+    False, _ -> {
+      io.println(dst <> " already exists. It won't be overriden")
+      Ok(Nil)
+    }
   }
 }
 

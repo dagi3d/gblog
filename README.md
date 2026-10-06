@@ -12,19 +12,62 @@ gleam add glen             # to avoid gleam compiler warning
 ```
 
 ```
-# 
-nodeLinker: hoisted
-allowBuilds:
-  '@parcel/watcher': true
-  esbuild: true
-packages:
-  - ./build/packages/gblog/priv/
+# this will copy the following files
+#
+# ├── blog.db
+# ├── package.json
+# ├── pnpm-workspace.yaml
+# └── templates
+#     ├── index.html.pug
+#     ├── layout.html.pug
+#     ├── mixins.pug
+#     ├── post.html.pug
+#     └── posts.html.pug
+#
+# existing files are never overwritten
+
+gleam run -m gblog/init
 ```
 
 ```sh
 pnpm install
 ```
 
+The generated `package.json` and `pnpm-workspace.yaml` make gblog's npm
+dependencies (pug, the Notion client, sass, esbuild, ...) resolvable from your
+project root. Deno refuses bare imports such as `pug` when the project root has
+no `package.json`, so keep both files even if you don't add npm dependencies of
+your own.
+
+## Sync posts
+```
+# ensure following env variables are available
+# .env or .env.local files are support
+NOTION_API_KEY=
+NOTION_DATA_SOURCE_ID=
+```
+
+```bash
+gleam run -m gblog/sync
+```
+
+## Wire your app
+
+```toml
+[javascript]
+runtime = "deno"
+
+[javascript.deno]
+# net:       the http server
+# read/write: sqlite database and templates
+# env:       APP_ENV, NOTION_API_KEY, NOTION_DATA_SOURCE_ID
+# sys:       pug reads $HOME through its `resolve` dependency
+allow_net = true
+allow_read = true
+allow_write = true
+allow_env = true
+allow_sys = true
+```
 
 ```gleam
 import gblog
@@ -44,4 +87,3 @@ fn handle_request(
   router.default_routes(req, ctx)
 }
 ```
-
