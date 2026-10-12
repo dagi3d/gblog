@@ -17,6 +17,9 @@ repository = { type = "github", user = "dagi3d", repo = "gblog" }
 [javascript]
 runtime = "deno"
 
+[javascript.deno]
+allow_read = true
+
 [dependencies]
 gleam_stdlib = ">= 1.0.0 and < 2.0.0"
 sqlight = ">= 1.2.0 and < 2.0.0"
