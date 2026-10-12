@@ -1,5 +1,8 @@
 # gblog
 
+Gblog is a blog engine that pulls posts from a Notion database and persists them in a local sqlite db.
+Templates are written in [pug](https://pugjs.org/).
+
 [![Package Version](https://img.shields.io/hexpm/v/gblog)](https://hex.pm/packages/gblog)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://gblog.hexdocs.pm/)
 
@@ -15,6 +18,7 @@ gleam add glen             # to avoid gleam compiler warning
 # this will copy the following files
 #
 # ├── blog.db
+# ├── Dockerfile
 # ├── package.json
 # ├── pnpm-workspace.yaml
 # └── templates
@@ -38,15 +42,15 @@ from your project root.
 
 ## Sync posts
 Notion database should have the following properties:
-`title`
-`status`: status type witht the values "published" and "draft"
-`tags`: multiselect type
-`excerpt`: text type
-`published_at`: date type
+- `title`
+- `status`: status type witht the values "published" and "draft"
+- `tags`: multiselect type
+- `excerpt`: text type
+- `published_at`: date type
 
 ```
 # ensure following env variables are available
-# .env or .env.local files are support
+# .env or .env.local files are supported
 NOTION_API_KEY=
 NOTION_DATA_SOURCE_ID=
 ```
@@ -91,3 +95,4 @@ fn handle_request(
   router.default_routes(req, ctx)
 }
 ```
+
