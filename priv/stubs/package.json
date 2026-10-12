@@ -1,6 +1,9 @@
 {
   "private": true,
   "type": "module",
+	"scripts": {
+    "build:assets": "pnpm -F gblog build:assets",
+	},
   "dependencies": {
   }
 }

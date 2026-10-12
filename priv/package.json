@@ -8,7 +8,7 @@
 		"build:js": "cd \"$INIT_CWD\" && esbuild assets/js/application.js --bundle --outdir=public/assets/js",
 		"_watch:css": "cd \"$INIT_CWD\" && sass assets/css/application.scss public/assets/css/application.css --load-path=node_modules --quiet-deps --silence-deprecation=import --watch",
 		"_watch:js": "cd \"$INIT_CWD\" && esbuild assets/js/main.js --bundle --outdir=public/assets/js --watch=forever",
-		"_build:assets": "cd \"$INIT_CWD\" && sass assets/css/application.scss public/assets/css/application.css --load-path=node_modules --quiet-deps --silence-deprecation=import && esbuild assets/js/main.js --bundle --outdir=public/assets/js",
+		"build:assets": "cd \"$INIT_CWD\" && pnpm -F gblog build:css && pnpm -F gblog build:js",
 		"_watch:assets": "cd \"$INIT_CWD\" && (sass assets/css/application.scss public/assets/css/application.css --load-path=node_modules --quiet-deps --silence-deprecation=import --watch & esbuild assets/js/main.js --bundle --outdir=public/assets/js --watch=forever & wait)"
   },
   "keywords": [],

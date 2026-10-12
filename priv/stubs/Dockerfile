@@ -14,7 +14,7 @@ RUN pnpm run build:assets
 
 FROM denoland/deno:alpine
 RUN apk add bash
-COPY --from=build /app/build/dev/javascript /app/build
+COPY --from=build /app/build /app/build/
 COPY --from=build /app/node_modules /app/node_modules/
 COPY --from=build /app/pnpm* /app/
 COPY --from=build /app/package.json /app/
@@ -23,9 +23,8 @@ COPY --from=build /app/public /app/public/
 COPY --from=build /app/blog.db /app/
 COPY *.mjs /app/
 COPY entrypoint.sh /app/
+COPY gleam.toml /app/
 WORKDIR /app
 
 ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["deno", "-A", "entry.mjs", "start"]
-
-
