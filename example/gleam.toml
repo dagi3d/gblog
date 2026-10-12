@@ -2,18 +2,9 @@ name = "blog_demo"
 version = "1.0.0"
 target = "javascript"
 
+
 [javascript]
 runtime = "deno"
-
-[javascript.deno]
-# gblog needs: net (http server), read/write (sqlite db + templates),
-# env (APP_ENV, NOTION_*), sys (pug's `resolve` dependency reads $HOME)
-allow_net = true
-allow_read = true
-allow_write = true
-allow_env = true
-allow_sys = true
-
 
 # Fill out these fields if you intend to generate HTML documentation or publish
 # your project to the Hex package manager.

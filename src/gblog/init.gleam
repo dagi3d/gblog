@@ -17,6 +17,8 @@ pub fn main() -> Result(Nil, simplifile.FileError) {
   let _ = copy(src_dir, "/package.json", cwd)
   let _ = copy(src_dir, "/pnpm-workspace.yaml", cwd)
   let _ = copy(src_dir, "/blog.db", cwd)
+  let _ = copy(src_dir, "/entry.mjs", cwd)
+  let _ = copy(src_dir, "/Dockerfile", cwd)
 }
 
 fn copy(src_dir, stub, dst_dir) {

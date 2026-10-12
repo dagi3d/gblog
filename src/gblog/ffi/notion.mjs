@@ -3,8 +3,8 @@ import { NotionConverter } from "notion-to-md";
 import { NotionRenderer, createBlockRenderer } from '@notion-render/client';
 import dotenv from 'dotenv'
 import slugify from 'slugify'
-import * as path from 'path';
-import { readFile } from 'fs/promises';
+import * as path from 'node:path';
+import { readFile } from 'node:fs/promises';
 
 
 

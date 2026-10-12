@@ -33,13 +33,17 @@ gleam run -m gblog/init
 pnpm install
 ```
 
-The generated `package.json` and `pnpm-workspace.yaml` make gblog's npm
-dependencies (pug, the Notion client, sass, esbuild, ...) resolvable from your
-project root. Deno refuses bare imports such as `pug` when the project root has
-no `package.json`, so keep both files even if you don't add npm dependencies of
-your own.
+The copied `package.json` and `pnpm-workspace.yaml` files allow to resolve js dependencies(pug, the Notion client, sass, esbuild, ...)  
+from your project root.
 
 ## Sync posts
+Notion database should have the following properties:
+`title`
+`status`: status type witht the values "published" and "draft"
+`tags`: multiselect type
+`excerpt`: text type
+`published_at`: date type
+
 ```
 # ensure following env variables are available
 # .env or .env.local files are support

@@ -1,1 +1,9 @@
-p posts
+//- posts.html.pug
+extends layout.html.pug
+
+block content
+  each entry in posts
+    h3= entry.year
+    each post in entry.posts
+      .post
+        + link_to(post_path(post), post.title)
